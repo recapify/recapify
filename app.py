@@ -76,6 +76,9 @@ def get_token(session):
     return token_info, token_valid
 
 # more methods here for the wrapped
+@app.route('/artist')
+def get_top_artist():
+    pass
 
 if __name__ == "__main__":
     app.run(debug=True)
