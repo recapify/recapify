@@ -1,84 +1,88 @@
-from flask import Flask, render_template, session, request, redirect
-from creds import *
+from flask import Flask, request, url_for, session, redirect
 import spotipy
+from spotipy.oauth2 import SpotifyOAuth
 import time
+from creds import *
 
 app = Flask(__name__)
-app.secret_key = SSK
-
-api_base = 'https://accounts.spotify.com'
-
-SCOPE = "user-read-recently-played"
 
 
-# logs the user in and authorises access to scope
-@app.get("/")
-def verify():
-    sp_oauth = spotipy.oauth2.SpotifyOAuth(client_id=client_ID, client_secret=client_SECRET, redirect_uri=redirect_URI, scope=SCOPE)
+# signs the session cookie
+app.secret_key = "aaiurhpUSDHqo837xron"
+app.config['SESSION_COOKIE_NAME'] = "Lydia's Cookie" # session allows you to log in during the same session
+TOKEN_INFO = "token_info"
+
+
+@app.route('/')
+def login():
+    sp_oauth = create_spotify_oauth()
     auth_url = sp_oauth.get_authorize_url()
-    print(auth_url)
     return redirect(auth_url)
 
 
-@app.get("/index")
-def index():
-    return render_template("index.html")
-
-
-# Spotify returns access and refresh tokens
-@app.get("/api_callback")
-def api_callback():
-    sp_oauth = spotipy.oauth2.SpotifyOAuth(client_id=client_ID, client_secret=client_SECRET, redirect_uri=redirect_URI, scope=SCOPE)
+@app.route('/redirect')
+def redirect_page():
+    sp_oauth = create_spotify_oauth()
     session.clear()
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
-
-    # Saving the access token along with all other token related info
-    session["token_info"] = token_info
-
-    return redirect("index")
+    # saving token info in the session
+    session[TOKEN_INFO] = token_info
+    return redirect("getTracks")
 
 
-# Spotify returns requested data
-@app.get("/go")
-def go():
-    session['token_info'], authorised = get_token(session)
-    session.modified = True
-    if not authorised:
-        return redirect('/')
-    data = request.form
-    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
-    response = sp.current_user_top_tracks()
+@app.route('/getTracks')
+def get_tracks():
+    try:
+        token_info = get_token()
+    except:
+        print("user not logged in")
+        return redirect("/")
+    sp = spotipy.Spotify(auth=token_info['access_token'])
+    all_songs = []
+    iter = 0
+    while True:
+        items = sp.current_user_saved_tracks(limit=50, offset=iter * 50)['items']
+        iter += 1
+        all_songs += items
+        if len(items) < 50:
+            break
+    return str(len(all_songs))
 
-    return render_template("results.html", data=response)
+
+@app.route('/getArtists')
+def get_artist():
+    try:
+        token_info = get_token()
+    except:
+        print("user not logged in")
+        return redirect("/")
+    sp = spotipy.Spotify(auth=token_info['access_token'])
+    results = sp.current_user_top_artists(limit=20, offset=0, time_range='medium_term')
+    for items in results['items']:
+        return str(items['name'])
 
 
-# Checks to see if token is valid and gets a new token if not
-def get_token(session):
-    token_valid = False
-    token_info = session.get("token_info", {})
-
-    # Checking if the session already has a token stored
-    if not (session.get('token_info', False)):
-        token_valid = False
-        return token_info, token_valid
-
-    # Checking if token has expired
+def get_token():
+    token_info = session.get(TOKEN_INFO, None)
+    if not token_info:
+        raise "exception"
     now = int(time.time())
-    is_token_expired = session.get('token_info').get('expires_at') - now < 60
+    is_expired = token_info['expires_at'] - now < 60
+    if (is_expired):
+        sp_oauth = create_spotify_oauth()
+        token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
+    return token_info
 
-    # Refreshing token if it has expired
-    if is_token_expired:
-        sp_oauth = spotipy.oauth2.SpotifyOAuth(client_id=client_ID, client_secret=client_SECRET, redirect_uri=redirect_URI, scope=SCOPE)
-        token_info = sp_oauth.refresh_access_token(session.get('token_info').get('refresh_token'))
 
-    token_valid = True
-    return token_info, token_valid
+def create_spotify_oauth():
+    return SpotifyOAuth(
+            client_id=client_ID,
+            client_secret=client_SECRET,
+            redirect_uri=url_for('redirect_page', _external=True),
+            scope="user-library-read")
 
-# more methods here for the wrapped
-@app.route('/artist')
-def get_top_artist():
-    pass
 
+app.run(debug=True)
 if __name__ == "__main__":
     app.run(debug=True)
