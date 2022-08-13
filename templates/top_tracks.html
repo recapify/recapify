@@ -16,17 +16,17 @@
       <ul class="navbar-nav">
         <li class="nav-item"><a href="/" class="nav-link px-5">Recapify home</a></li>
         <li class="nav-item"><a href="/saved-tracks" class="nav-link px-5">Saved tracks</a></li>
-        <li class="nav-item"><a href="/top-tracks" class="nav-link px-5">Top tracks</a></li>
+        <li class="nav-item"><a href="/top-tracks" class="nav-link px-5 active">Top tracks</a></li>
         <li class="nav-item"><a href="/top-artists" class="nav-link px-5">Top artists</a></li>
         <li class="nav-item"><a href="/playlists" class="nav-link px-5">Playlists</a></li>
-        <li class="nav-item"><a href="/recently-played" class="nav-link px-5 active">Recently played</a></li>
+        <li class="nav-item"><a href="/recently-played" class="nav-link px-5">Recently played</a></li>
       </ul>
     </div>
   </div>
   <main class="p-5 pe-4" style="margin-left: 212px;">
-    <h1 class="display-5 mb-5">Recently played</h1>
+    <h1 class="display-5 mb-5">Your top tracks</h1>
     <div class="d-flex flex-wrap">
-      {% for track in recently_played %}
+      {% for track in top_tracks %}
         <div class="card mb-4 me-4" style="width: 18rem; overflow: hidden;">
           <img src="{{ track.image }}" alt="" class="card-img-top">
           <h6 class="card-header bg-dark">Album: {{ track.album }}</h6>

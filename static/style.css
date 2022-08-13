@@ -1,0 +1,7 @@
+.nav-link:hover {
+  background-color: var(--bs-dark);
+}
+
+.nav-link.active {
+  color: #0c0 !important;
+}
