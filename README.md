@@ -1,5 +1,5 @@
 # Recapify
-An application that will help you summarize your usage of Spotify.
+An application that will help you summarise your usage of Spotify.
 
 ## Summary
 This application allows the users to autheniticate their Spotify account using OAuth 2.0 and access its information through authorisation. Through Recapify, the user can access a summary of their Spotify usage. The features working in this first version are:
@@ -27,9 +27,8 @@ If you are using a different port than 5000 then make sure to update this in the
 
 ![image](https://user-images.githubusercontent.com/102866922/184502589-7713ee24-3e74-4cf0-9b30-7230acce931e.png)
 
-Create a new file called creds.py using creds_template and insert your Client_ID and Client_Secret (this data is specific to your account and shouldn't be shared with anyone or via Github) then finally install Flask and Spotipy by Python Package manager or pip.
-Run the app.py file
-<maybe insert a video tutorial>
+Create a new file called creds.py using creds_template and insert your Client_ID and Client_Secret (this data is specific to your account and shouldn't be shared with anyone or via Github) then finally install `Flask` and `Spotipy` by Python Package manager or `pip`.
+Run the `app.py` file
 
 ## Helpful Documentation
 * Spotipy documentation can be found here https://spotipy.readthedocs.io/en/master/
