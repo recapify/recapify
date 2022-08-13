@@ -58,6 +58,7 @@ def get_artist():
     except:
         print("user not logged in")
         return redirect("/")
+    scope = "user-top-read"
     sp = spotipy.Spotify(auth=token_info['access_token'])
     results = sp.current_user_top_artists(limit=20, offset=0, time_range='medium_term')
     for items in results['items']:
@@ -90,6 +91,18 @@ def get_recently_played():
         track = item['track']
         return jsonify(idx, track['artists'][0]['name'], " – ", track['name'])
 
+@app.route('/getPlaylists')
+def get_playlists():
+    try:
+        token_info = get_token()
+    except:
+        print("user not logged in")
+        return redirect("/")
+    sp = spotipy.Spotify(auth=token_info['access_token'])
+    results = sp.current_user_playlists(limit=50)
+    for i, item in enumerate(results['items']):
+        return jsonify("%d %s" % (i, item['name']))
+
 
 def get_token():
     token_info = session.get(TOKEN_INFO, None)
@@ -108,7 +121,7 @@ def create_spotify_oauth():
             client_id=client_ID,
             client_secret=client_SECRET,
             redirect_uri=url_for('redirect_page', _external=True),
-            scope="user-library-read")
+            scope=scope)
 
 
 if __name__ == "__main__":
