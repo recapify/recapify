@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recapify</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-dark text-light">
+  <div class="offcanvas offcanvas-start show bg-black text-white" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" style="width: 212px;">
+    <div class="offcanvas-header p-0">
+      <img src="/static/recapify.png" alt="Logo" class="w-100 p-5 pb-4">
+    </div>
+    <div class="offcanvas-body p-0">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a href="/home" class="nav-link px-5 active">Recapify home</a></li>
+        <li class="nav-item"><a href="/saved-tracks" class="nav-link px-5">Saved tracks</a></li>
+        <li class="nav-item"><a href="/top-tracks" class="nav-link px-5">Top tracks</a></li>
+        <li class="nav-item"><a href="/top-artists" class="nav-link px-5">Top artists</a></li>
+        <li class="nav-item"><a href="/playlists" class="nav-link px-5">Playlists</a></li>
+        <li class="nav-item"><a href="/recently-played" class="nav-link px-5">Recently played</a></li>
+      </ul>
+    </div>
+  </div>
+  <main class="p-5" style="margin-left: 212px;">
+    <h1 class="display-5 mb-5 text-center">Welcome to Recapify</h1>
+    <div id="carousel" class="carousel slide" data-bs-ride="false">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="3" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{{ images.saved_track_image }}" class="d-block w-100" alt="">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Saved tracks</h5>
+            <p><a href="/saved-tracks" class="link-light">View all your saved tracks</a></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{{ images.top_track_image }}" class="d-block w-100" alt="">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Top tracks</h5>
+            <p><a href="/top-tracks" class="link-light">View your top 20 tracks from the past 6 months</a></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{{ images.top_artist_image }}" class="d-block w-100" alt="">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Top artists</h5>
+            <p><a href="/top-artists" class="link-light">View your top 20 artists from the past 6 months</a></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{{ images.playlist_image }}" class="d-block w-100" alt="">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Playlists</h5>
+            <p><a href="/playlists" class="link-light">View up to 50 of your playlists</a></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{{ images.recently_played_image }}" class="d-block w-100" alt="">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Recently played</h5>
+            <p><a href="/recently-played" class="link-light">View your 20 most recently played tracks</a></p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

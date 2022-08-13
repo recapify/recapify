@@ -1,7 +1,19 @@
+
 .nav-link:hover {
   background-color: var(--bs-dark);
 }
 
 .nav-link.active {
   color: #0c0 !important;
+}
+
+.carousel-item {
+  transition-duration: 0s;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  opacity: 0.3;
 }
