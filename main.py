@@ -8,8 +8,8 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_ID,
                                                redirect_uri=redirect_URI,
                                                scope=scope))
 
-# add what you want to do here to make the wrapped
-results = sp.current_user_recently_played()
-for idx, item in enumerate(results['items']):
-    track = item['track']
-    print(idx, track['artists'][0]['name'], " – ", track['name'])
+def get_recently_played_song():
+    results = sp.current_user_recently_played(limit=20)
+    for idx, item in enumerate(results['items']):
+        track = item['track']
+        return idx, track['artists'][0]['name'], " – ", track['name']
