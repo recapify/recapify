@@ -18,22 +18,22 @@
         <li class="nav-item"><a href="/saved-tracks" class="nav-link px-5">Saved tracks</a></li>
         <li class="nav-item"><a href="/top-tracks" class="nav-link px-5">Top tracks</a></li>
         <li class="nav-item"><a href="/top-artists" class="nav-link px-5">Top artists</a></li>
-        <li class="nav-item"><a href="/playlists" class="nav-link px-5">Playlists</a></li>
-        <li class="nav-item"><a href="/recently-played" class="nav-link px-5 active">Recently played</a></li>
+        <li class="nav-item"><a href="/playlists" class="nav-link px-5 active">Playlists</a></li>
+        <li class="nav-item"><a href="/recently-played" class="nav-link px-5">Recently played</a></li>
       </ul>
     </div>
   </div>
   <main class="p-5 pe-4" style="margin-left: 212px;">
-    <h1 class="display-5 mb-5">Recently played</h1>
+    <h1 class="display-5 mb-5">Your top artists</h1>
     <div class="d-flex flex-wrap">
-      {% for track in recently_played %}
+      {% for playlist in playlists %}
         <div class="card mb-4 me-4" style="width: 18rem; overflow: hidden;">
-          <img src="{{ track.image }}" alt="" class="card-img-top">
-          <h6 class="card-header bg-dark">Album: {{ track.album }}</h6>
+          <img src="{{ playlist.image }}" alt="" class="card-img-top">
+          <h6 class="card-header bg-dark">Owner: {{ playlist.owner }}</h6>
           <div class="card-body bg-black">
-            <h5 class="card-title">{{ track.name }}</h5>
-            <h6 class="card-subtitle mb-2">Artist(s): {{ track.artists }}</h6>
-            <p class="card-text">Released: {{ track.release_date }}</p>
+            <h5 class="card-title">{{ playlist.name }}</h5>
+            <h6 class="card-subtitle mb-2">Number of tracks: {{ playlist.track_count }}</h6>
+            <p class="card-text">{{ playlist.description }}</p>
           </div>
         </div>
       {% endfor %}

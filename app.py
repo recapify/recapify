@@ -1,6 +1,7 @@
 from flask import Flask, request, url_for, session, redirect, render_template, jsonify
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+from spotify_api import get_saved_tracks, get_top_tracks, get_top_artists, get_playlists, get_recently_played
 import time
 from creds import *
 
@@ -29,79 +30,62 @@ def redirect_page():
     token_info = sp_oauth.get_access_token(code)
     # saving token info in the session
     session[TOKEN_INFO] = token_info
-    return redirect("getTracks")
+    return redirect("saved-tracks")
 
 
-@app.route('/getTracks')
-def get_tracks():
+@app.route('/saved-tracks')
+def view_saved_tracks():
     try:
         token_info = get_token()
     except:
         print("user not logged in")
         return redirect("/")
-    sp = spotipy.Spotify(auth=token_info['access_token'])
-    all_songs = []
-    iter = 0
-    while True:
-        items = sp.current_user_saved_tracks(limit=50, offset=iter * 50)['items']
-        iter += 1
-        all_songs += items
-        if len(items) < 50:
-            break
-    return f"Your total number of saved tracks is {str(len(all_songs))}!"
+    saved_tracks = get_saved_tracks(token_info['access_token'])
+    return render_template("saved_tracks.html", saved_tracks=saved_tracks)
 
 
-@app.route('/getArtists')
-def get_artist():
+@app.route('/top-tracks')
+def view_top_tracks():
     try:
         token_info = get_token()
     except:
         print("user not logged in")
         return redirect("/")
-    scope = "user-top-read"
-    sp = spotipy.Spotify(auth=token_info['access_token'])
-    results = sp.current_user_top_artists(limit=20, offset=0, time_range='medium_term')
-    for items in results['items']:
-        return str(items['name'])
+    top_tracks = get_top_tracks(token_info['access_token'])
+    return render_template("top_tracks.html", top_tracks=top_tracks)
 
 
-@app.route('/getTopTracks')
-def get_top_tracks():
+@app.route('/top-artists')
+def view_top_artists():
     try:
         token_info = get_token()
     except:
         print("user not logged in")
         return redirect("/")
-    sp = spotipy.Spotify(auth=token_info['access_token'])
-    results = sp.current_user_top_tracks(limit=20, offset=0, time_range='medium_term')
-    for items in results['items']:
-        return str(items['name'])
+    top_artists = get_top_artists(token_info['access_token'])
+    return render_template("top_artists.html", top_artists=top_artists)
 
 
-@app.route('/getRecentlyPlayed')
-def get_recently_played():
+@app.route('/playlists')
+def view_playlists():
     try:
         token_info = get_token()
     except:
         print("user not logged in")
         return redirect("/")
-    sp = spotipy.Spotify(auth=token_info['access_token'])
-    results = sp.current_user_recently_played(limit=20)
-    for idx, item in enumerate(results['items']):
-        track = item['track']
-        return jsonify(idx, track['artists'][0]['name'], " – ", track['name'])
+    playlists = get_playlists(token_info['access_token'])
+    return render_template("playlists.html", playlists=playlists)
 
-@app.route('/getPlaylists')
-def get_playlists():
+
+@app.route('/recently-played')
+def view_recently_played():
     try:
         token_info = get_token()
     except:
         print("user not logged in")
         return redirect("/")
-    sp = spotipy.Spotify(auth=token_info['access_token'])
-    results = sp.current_user_playlists(limit=50)
-    for i, item in enumerate(results['items']):
-        return jsonify("%d %s" % (i, item['name']))
+    recently_played = get_recently_played(token_info['access_token'])
+    return render_template("recently_played.html", recently_played=recently_played)
 
 
 def get_token():
@@ -110,7 +94,7 @@ def get_token():
         raise "exception"
     now = int(time.time())
     is_expired = token_info['expires_at'] - now < 60
-    if (is_expired):
+    if is_expired:
         sp_oauth = create_spotify_oauth()
         token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
     return token_info
@@ -125,4 +109,4 @@ def create_spotify_oauth():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5004)
