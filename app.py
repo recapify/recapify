@@ -30,6 +30,14 @@ def redirect_page():
     return redirect(url_for('home'))
 
 
+@app.route('/token')
+def get_token_for_testing():
+    try:
+        token_info = get_token()
+    except TimeoutError:
+        return redirect("/")
+    return jsonify({'token': token_info['access_token']})
+
 @app.route('/home')
 def home():
     try:
