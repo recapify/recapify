@@ -94,13 +94,13 @@ def get_top_artists(token):
 def get_playlists(token):
     spotify = spotipy.Spotify(auth=token)
     items = spotify.current_user_playlists(limit=50)['items']
-    playlists = [{
-        'name': item['name'],
-        'image': item['images'][0]['url'],
-        'owner': item['owner']['display_name'],
-        'track_count': item['tracks']['total'],
-        'description': item['description'],
-    } for item in items]
+    playlists = [Playlist(
+        name=item['name'],
+        image=item['images'][0]['url'],
+        owner=item['owner']['display_name'],
+        track_count=item['tracks']['total'],
+        description=item['description'],
+    ) for item in items]
     return playlists
 
 
