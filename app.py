@@ -1,4 +1,4 @@
-from flask import Flask, request, url_for, session, redirect, render_template
+from flask import Flask, request, url_for, session, redirect, render_template, jsonify
 from spotipy.oauth2 import SpotifyOAuth
 from spotify_api import get_home_images, get_saved_tracks, get_top_tracks, get_top_artists, get_playlists, get_recently_played
 from creds import *
