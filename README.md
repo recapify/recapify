@@ -16,7 +16,7 @@ https://developer.spotify.com/dashboard/login login to Spotify for developers us
 
 ![image](https://user-images.githubusercontent.com/102866922/184502508-1461ead8-5aac-4f49-bc53-9efcd57afe44.png)
 
-On the dashboard click create an app, with your app information and set the redirect uri to http://127.0.0.1:5000/api_callback.
+On the dashboard click create an app, with your app information and set the redirect uri to http://127.0.0.1:5000/redirect.
 
 ![image](https://user-images.githubusercontent.com/102866922/184502543-e9809bb9-b4c9-40f4-894f-96f071c1b43a.png)
 
